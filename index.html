@@ -1,141 +1,200 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Demo - Solicitud de Reunión</title>
-    <style>
-        body {
-            background: #f2f2f2;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Gestoría Online - Solicita tu Reunión</title>
+  <style>
+    /* Reset básico */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-        .container {
-            background: #fff;
-            padding: 30px 40px;
-            border-radius: 12px;
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-            max-width: 400px;
-            width: 100%;
-        }
+    body {
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: linear-gradient(135deg, #74ebd5 0%, #acb6e5 100%);
+      font-family: 'Poppins', sans-serif;
+    }
 
-        h1 {
-            text-align: center;
-            margin-bottom: 20px;
-            color: #333;
-        }
+    .form-container {
+      background: white;
+      padding: 40px;
+      border-radius: 20px;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+      width: 100%;
+      max-width: 400px;
+      animation: fadeIn 1s ease;
+    }
 
-        label {
-            display: block;
-            margin-top: 10px;
-            margin-bottom: 5px;
-            font-weight: bold;
-            color: #555;
-        }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
 
-        input {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 15px;
-            border: 1px solid #ccc;
-            border-radius: 8px;
-            box-sizing: border-box;
-            transition: border-color 0.3s;
-        }
+    h1 {
+      text-align: center;
+      margin-bottom: 20px;
+      color: #333;
+      font-size: 24px;
+    }
 
-        input:focus {
-            border-color: #007BFF;
-            outline: none;
-        }
+    label {
+      display: block;
+      margin-top: 15px;
+      margin-bottom: 5px;
+      font-weight: 600;
+      color: #555;
+    }
 
-        button {
-            width: 100%;
-            padding: 12px;
-            background-color: #007BFF;
-            color: white;
-            font-size: 16px;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
+    input {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      margin-bottom: 15px;
+      transition: border 0.3s;
+    }
 
-        button:hover {
-            background-color: #0056b3;
-        }
+    input:focus {
+      border-color: #74ebd5;
+      outline: none;
+    }
 
-        #mensaje {
-            text-align: center;
-            margin-top: 15px;
-            font-size: 14px;
-        }
-    </style>
+    button {
+      width: 100%;
+      background: #74ebd5;
+      border: none;
+      padding: 14px;
+      color: white;
+      font-weight: bold;
+      border-radius: 10px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    button:hover {
+      background: #4ab3c6;
+    }
+
+    .mensaje {
+      text-align: center;
+      margin-top: 15px;
+      font-size: 14px;
+    }
+
+    /* Modal de éxito */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.6);
+      justify-content: center;
+      align-items: center;
+      z-index: 999;
+    }
+
+    .modal-content {
+      background: white;
+      padding: 30px 40px;
+      border-radius: 15px;
+      text-align: center;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+      animation: fadeIn 0.5s ease;
+    }
+
+    .modal-content h2 {
+      color: #333;
+      margin-bottom: 10px;
+    }
+
+    .modal-content p {
+      color: #666;
+    }
+  </style>
 </head>
+
 <body>
-    <div class="container">
-        <h1>Agendar Reunión</h1>
 
-        <form id="reunionForm">
-            <label for="nombre">Nombre:</label>
-            <input type="text" id="nombre" name="nombre" required>
+<div class="form-container">
+  <h1>Solicitar Reunión</h1>
 
-            <label for="correo">Correo:</label>
-            <input type="email" id="correo" name="correo" required>
+  <form id="reunionForm">
+    <label for="nombre">Nombre:</label>
+    <input type="text" id="nombre" name="nombre" required>
 
-            <label for="fecha_reunion">Fecha de Reunión:</label>
-            <input type="datetime-local" id="fecha_reunion" name="fecha_reunion" required>
+    <label for="correo">Correo:</label>
+    <input type="email" id="correo" name="correo" required>
 
-            <label for="servicio">Servicio:</label>
-            <input type="text" id="servicio" name="servicio" required>
+    <label for="fecha_reunion">Fecha de Reunión:</label>
+    <input type="datetime-local" id="fecha_reunion" name="fecha_reunion" required>
 
-            <button type="submit">Agendar</button>
-        </form>
+    <label for="servicio">Servicio:</label>
+    <input type="text" id="servicio" name="servicio" required>
 
-        <p id="mensaje"></p>
-    </div>
+    <button type="submit">Agendar</button>
+  </form>
 
-    <script>
-        document.getElementById('reunionForm').addEventListener('submit', async function(event) {
-            event.preventDefault();
+  <p class="mensaje" id="mensaje"></p>
+</div>
 
-            const nombre = document.getElementById('nombre').value;
-            const correo = document.getElementById('correo').value;
-            const fecha_reunion = document.getElementById('fecha_reunion').value;
-            const servicio = document.getElementById('servicio').value;
+<!-- Modal de confirmación -->
+<div class="modal" id="modalConfirmacion">
+  <div class="modal-content">
+    <h2>¡Reunión Agendada!</h2>
+    <p>Te hemos enviado un correo de confirmación.</p>
+  </div>
+</div>
 
-            try {
-                const response = await fetch('https://pouso.app.n8n.cloud/webhook/demo-directrices', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        nombre: nombre,
-                        correo: correo,
-                        fecha_reunion: fecha_reunion,
-                        servicio: servicio
-                    })
-                });
+<script>
+  const form = document.getElementById('reunionForm');
+  const modal = document.getElementById('modalConfirmacion');
 
-                if (response.ok) {
-                    document.getElementById('mensaje').innerText = '✅ Reunión agendada correctamente.';
-                    document.getElementById('mensaje').style.color = 'green';
-                    document.getElementById('reunionForm').reset();
-                } else {
-                    document.getElementById('mensaje').innerText = '❌ Error al agendar la reunión.';
-                    document.getElementById('mensaje').style.color = 'red';
-                }
-            } catch (error) {
-                document.getElementById('mensaje').innerText = '❌ Error de conexión.';
-                document.getElementById('mensaje').style.color = 'red';
-                console.error('Error:', error);
-            }
-        });
-    </script>
+  form.addEventListener('submit', async function(event) {
+    event.preventDefault();
+
+    const data = {
+      nombre: document.getElementById('nombre').value,
+      correo: document.getElementById('correo').value,
+      fecha_reunion: document.getElementById('fecha_reunion').value,
+      servicio: document.getElementById('servicio').value
+    };
+
+    try {
+      const response = await fetch('https://pouso.app.n8n.cloud/webhook/demo-directrices', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+      });
+
+      if (response.ok) {
+        modal.style.display = 'flex'; // Mostrar el modal
+        form.reset(); // Limpiar el formulario
+      } else {
+        document.getElementById('mensaje').innerText = 'Error al agendar la reunión.';
+        document.getElementById('mensaje').style.color = 'red';
+      }
+    } catch (error) {
+      document.getElementById('mensaje').innerText = 'Error de conexión.';
+      document.getElementById('mensaje').style.color = 'red';
+      console.error('Error:', error);
+    }
+  });
+
+  // Cierra el modal cuando se hace clic en cualquier lugar
+  modal.addEventListener('click', function() {
+    modal.style.display = 'none';
+  });
+</script>
+
 </body>
 </html>
