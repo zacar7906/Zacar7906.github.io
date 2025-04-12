@@ -9,7 +9,7 @@ app.use(cors());
 app.use(express.json());
 
 // Configura tu API KEY de OpenAI aquí
-const OPENAI_API_KEY = 'sk-proj-TU-API-KEY-AQUI';
+const OPENAI_API_KEY = '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';
 
 // Ruta POST /chat
 app.post('/chat', async (req, res) => {
