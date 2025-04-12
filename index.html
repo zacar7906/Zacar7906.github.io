@@ -2,13 +2,13 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>DEMO - Gestoría Online</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gestoría Online - ChatBot Demo</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
       background: linear-gradient(135deg, #89f7fe, #66a6ff);
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       margin: 0;
-      padding: 0;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -115,6 +115,10 @@
         body: JSON.stringify({ messages: conversation })
       });
 
+      if (!response.ok) {
+        throw new Error('Servidor no respondió correctamente.');
+      }
+
       const data = await response.json();
       removeTyping();
       const botMessage = data.respuesta || "No se recibió respuesta.";
@@ -123,7 +127,7 @@
 
     } catch (error) {
       removeTyping();
-      appendMessage("❌ Error de conexión.", 'assistant');
+      appendMessage("❌ Error de conexión: " + error.message, 'assistant');
       console.error('Error:', error);
     }
   }
@@ -140,7 +144,7 @@
     const typing = document.createElement('div');
     typing.id = 'typing';
     typing.classList.add('message', 'assistant');
-    typing.innerText = 'Asistente escribiendo...';
+    typing.innerText = 'ChatBot está escribiendo...';
     messagesContainer.appendChild(typing);
     messagesContainer.scrollTop = messagesContainer.scrollHeight;
   }
