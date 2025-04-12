@@ -1,121 +1,64 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <title>DEMO - Agente de Voz Demo - Agencia Online</title>
-  <style>
-    /* Estilos básicos para hacer la página más gráfica y profesional */
-    body {
-      font-family: Arial, sans-serif;
-      max-width: 800px;
-      margin: 0 auto;
-      padding: 20px;
-      background: #f6f6f6;
-    }
-    h1 {
-      text-align: center;
-      color: #333;
-    }
-    form {
-      background: #fff;
-      padding: 20px;
-      border: 1px solid #ddd;
-      border-radius: 5px;
-      margin-bottom: 20px;
-    }
-    label {
-      font-weight: bold;
-      margin-top: 10px;
-      display: block;
-    }
-    input, select, button {
-      width: 100%;
-      padding: 8px;
-      margin-top: 5px;
-      margin-bottom: 15px;
-      border: 1px solid #ccc;
-      border-radius: 3px;
-      box-sizing: border-box;
-    }
-    button {
-      background: #007bff;
-      color: #fff;
-      font-size: 1em;
-      cursor: pointer;
-      border: none;
-    }
-    button:hover {
-      background: #0056b3;
-    }
-    #result {
-      background: #e0f7fa;
-      border: 1px solid #b2ebf2;
-      padding: 15px;
-      border-radius: 5px;
-      white-space: pre-wrap;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Demo - Solicitud de Reunión</title>
 </head>
 <body>
-  <h1>Demo - Solicitud de Reunión</h1>
-  <form id="demoForm">
-    <label for="nombre">Nombre:</label>
-    <input type="text" id="nombre" name="nombre" placeholder="Introduce tu nombre" required>
-    
-    <label for="correo">Correo:</label>
-    <input type="email" id="correo" name="correo" placeholder="Introduce tu email" required>
-    
-    <label for="fecha_reunion">Fecha de Reunión:</label>
-    <input type="datetime-local" id="fecha_reunion" name="fecha_reunion" required>
-    
-    <label for="servicio">Servicio:</label>
-    <select id="servicio" name="servicio">
-      <option value="Consultoría Digital">Consultoría Digital</option>
-      <option value="Marketing Digital">Marketing Digital</option>
-      <option value="Desarrollo Web">Desarrollo Web</option>
-    </select>
-    
-    <button type="submit">Enviar Solicitud</button>
-  </form>
-  
-  <div id="result"></div>
-  
-  <script>
-    // Al enviar el formulario, se realiza una petición POST al webhook de n8n
-    document.getElementById('demoForm').addEventListener('submit', function(e) {
-      e.preventDefault();
-      
-      // Se crea el payload con los datos introducidos en el formulario
-      var payload = {
-        body: {
-          nombre: document.getElementById('nombre').value,
-          correo: document.getElementById('correo').value,
-          // Convertimos la fecha ingresada a formato ISO (asegúrate de que la fecha se procese correctamente)
-          fecha_reunion: new Date(document.getElementById('fecha_reunion').value).toISOString(),
-          servicio: document.getElementById('servicio').value
-        }
-      };
-      
-      // URL del webhook de n8n (modifica la URL si está en producción o usa la que ya tienes configurada)
-      const webhookURL = "https://pouso.app.n8n.cloud/webhook-test/demo-directrices";
-      
-      // Enviamos la petición al webhook
-      fetch(webhookURL, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify(payload)
-      })
-      .then(response => response.text())
-      .then(data => {
-        // Mostramos la respuesta en el div #result
-        document.getElementById('result').innerHTML = data;
-      })
-      .catch(error => {
-        document.getElementById('result').innerHTML = "Error: " + error;
-      });
-    });
-  </script>
+    <h1>GESTORIA ONLINE</h1>
+
+    <form id="reunionForm">
+        <label for="nombre">Nombre:</label><br>
+        <input type="text" id="nombre" name="nombre" required><br><br>
+
+        <label for="correo">Correo:</label><br>
+        <input type="email" id="correo" name="correo" required><br><br>
+
+        <label for="fecha_reunion">Fecha de Reunión:</label><br>
+        <input type="datetime-local" id="fecha_reunion" name="fecha_reunion" required><br><br>
+
+        <label for="servicio">Servicio:</label><br>
+        <input type="text" id="servicio" name="servicio" required><br><br>
+
+        <button type="submit">Agendar Reunión</button>
+    </form>
+
+    <p id="mensaje"></p>
+
+    <script>
+        document.getElementById('reunionForm').addEventListener('submit', async function(event) {
+            event.preventDefault();
+
+            const nombre = document.getElementById('nombre').value;
+            const correo = document.getElementById('correo').value;
+            const fecha_reunion = document.getElementById('fecha_reunion').value;
+            const servicio = document.getElementById('servicio').value;
+
+            try {
+                const response = await fetch('https://pouso.app.n8n.cloud/webhook/demo-directrices', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        nombre: nombre,
+                        correo: correo,
+                        fecha_reunion: fecha_reunion,
+                        servicio: servicio
+                    })
+                });
+
+                if (response.ok) {
+                    document.getElementById('mensaje').innerText = '✅ Reunión agendada correctamente.';
+                } else {
+                    document.getElementById('mensaje').innerText = '❌ Error al agendar la reunión.';
+                }
+            } catch (error) {
+                document.getElementById('mensaje').innerText = '❌ Error al conectar con el servidor.';
+                console.error('Error:', error);
+            }
+        });
+    </script>
 </body>
 </html>
